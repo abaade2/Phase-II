@@ -476,7 +476,7 @@ public class InvoiceReport {
 				}
 				i++;
 			}
-				
+		}	
 	}
 
 }
