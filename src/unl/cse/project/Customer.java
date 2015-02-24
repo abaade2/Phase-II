@@ -4,67 +4,47 @@ package unl.cse.project;
 public class Customer {
 	private String customerCode;
 	private String type;
-	private String primaryContact;
+	private Persons primaryContact;
 	private String name;
 	private Address address;
-	private Persons person;
 		
-	public Customer(String customerCode, String type, Persons person, String name, Address address){
+	public Customer(String customerCode, String type, Persons primaryContact, String name, Address address){
 		
 		this.customerCode = customerCode;
 		this.type = type;
-		this.setPerson(person);
+		this.primaryContact = primaryContact;
 		this.name = name;
 		this.address = address;
 		
 	}
-
+	
+	public double getFee(){
+		if(this.type == "M"){
+			return 120;
+		}else if(this.type == "A"){
+			return 150;
+		}else return 0;
+			
+	}
+	
 	public String getCustomerCode() {
 		return customerCode;
-	}
-
-	public void setCustomerCode(String customerCode) {
-		this.customerCode = customerCode;
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getPrimaryContact() {
+	public Persons getPrimaryContact() {
 		return primaryContact;
-	}
-
-	public void setPrimaryContact(String primaryContact) {
-		this.primaryContact = primaryContact;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
-	public Persons getPerson() {
-		return person;
-	}
-
-	public void setPerson(Persons person) {
-		this.person = person;
-	}
-	
 }
