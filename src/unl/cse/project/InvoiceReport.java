@@ -22,11 +22,9 @@ import java.io.FileNotFoundException;
 
 
 
+
 public class InvoiceReport {
-	
-	public static void main(String[] args) {
-		
-		
+	public static void main(String[] args) {		
 		//New scanner that reads in the Persons data file
 		String fileName = "data/Persons.dat";
 		Scanner t = null;
@@ -71,19 +69,15 @@ public class InvoiceReport {
 		XStream xstream = new XStream();
 		
 		FileWriter writer2 = null;
-
 		try { 
 			writer2 = new FileWriter(xmlOut2); 
 		} 
 		catch (IOException e) { 
 			e.printStackTrace();
-
 		}
-
 		//For loop that goes through the array of persons converting it to xml
 		for(Persons p : Persons) { 
 			String pOut = xstream.toXML(p);
-
 			try {
 				writer2.write(pOut+"\n");
 			} catch (IOException e) {
@@ -152,23 +146,17 @@ public class InvoiceReport {
 	/*	
 		//Converting array to xml file
 		File xmlOut = new File("data/Customers.xml");
-
 		FileWriter writer = null;
-
 		
-
 		try { 
 			writer = new FileWriter(xmlOut); 
 		} 
 		catch (IOException e) { 
 			e.printStackTrace();
-
 		}
-
 		//For loop that goes through the array of customers converting it to xml
 		for(Customer cs : Customers) { 
 			String csout = xstream.toXML(cs);
-
 			try {
 				writer.write(csout+"\n");
 			} catch (IOException e) {
@@ -222,23 +210,17 @@ public class InvoiceReport {
 		/*	
 			//Converting array to xml file
 			File xmlOut4 = new File("data/Venues.xml");
-
 			FileWriter writer4 = null;
-
 			
-
 			try { 
 				writer4 = new FileWriter(xmlOut4); 
 			} 
 			catch (IOException e) { 
 				e.printStackTrace();
-
 			}
-
 			//For loop that goes through the array of customers converting it to xml
 			for(Venues vs : Venues) { 
 				String vsout = xstream.toXML(vs);
-
 				try {
 					writer4.write(vsout+"\n");
 				} catch (IOException e) {
@@ -355,22 +337,17 @@ public class InvoiceReport {
 			
 		/*	//Converting array to xml file
 			File xmlOut3 = new File("data/Products.xml");
-
 			FileWriter writer3 = null;
 			
-
 			try { 
 				writer3 = new FileWriter(xmlOut3); 
 			} 
 			catch (IOException e) { 
 				e.printStackTrace();
-
 			}
-
 			//For loop that goes through the array of persons converting it to xml
 			for(Product product1 : ProductArray) { 
 				String productOut = xstream.toXML(product1);
-
 				try {
 					writer3.write(productOut+"\n");
 				} catch (IOException e) {
@@ -437,46 +414,76 @@ public class InvoiceReport {
 				String[] splitProducts = tokens[4].split(",");
 				String[] individualProducts = null;
 				Product[] invoiceProducts = null;
-				int[] itemQuantity = null;
-				String[] seatsForPSL = null;
-				String[] datesForParkingPass = null;
-				int[] hoursForParkingPass = null;
+				String[] seats = null;
 				int y = 0;
+				int counter = 0;
 				for(int e = 0; e<splitProducts.length; e++){
 					individualProducts = splitProducts[e].split(":");
 					while(y<individualProducts.length){
-						
 						for(int l = 0;l<ProductArray.length;l++){
-						if(ProductArray[l].getProductCode().contains(individualProducts[e])){
-							if(ProductArray[y].getClass() == SeasonPass.class){
-								invoiceProducts[e] = ProductArray[y];
-								itemQuantity[e] = Integer.parseInt(invoiceProducts[e+1].toString());
-							}else if(ProductArray[y].getClass() == Refreshments.class){
-								invoiceProducts[e] = ProductArray[y];
-								itemQuantity[e] = Integer.parseInt(invoiceProducts[e+1].toString());
-							}else if(ProductArray[y].getClass() == PSL.class){
-								invoiceProducts[e] = ProductArray[y];
-								itemQuantity[e] = Integer.parseInt(invoiceProducts[e+1].toString());
+							if(ProductArray[l].getProductCode().contains(individualProducts[e])){
+								if(ProductArray[y].getClass() == SeasonPass.class){
+									invoiceProducts[e] = ProductArray[y];
+									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+1].toString()));
+								}else if(ProductArray[y].getClass() == Refreshments.class){
+									invoiceProducts[e] = ProductArray[y];
+									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+1].toString()));
+								}else if(ProductArray[y].getClass() == PSL.class){
+									invoiceProducts[e] = ProductArray[y];
+									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+1].toString()));
+									for(int v = 2; v<individualProducts.length; v++){
+										seats[counter] = invoiceProducts[v].toString();
+										counter++;
+									}
+									invoiceProducts[e].setSeats(seats);
+								}else if(ProductArray[y].getClass() == GameTicket.class){
+									invoiceProducts[e] = ProductArray[y];
+									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+1].toString()));
+								}else if(ProductArray[y].getClass() == ParkingPass.class){
+									invoiceProducts[e] = ProductArray[y];
+									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+2].toString()));
+									invoiceProducts[e].setDate(invoiceProducts[e+1].toString());
+									invoiceProducts[e].setHours(Integer.parseInt(invoiceProducts[e+3].toString()));	
+								}
 								
-							}else if(ProductArray[y].getClass() == GameTicket.class){
-								invoiceProducts[e] = ProductArray[y];
-								itemQuantity[e] = Integer.parseInt(invoiceProducts[e+1].toString());
-							}else if(ProductArray[y].getClass() == ParkingPass.class){
-								invoiceProducts[e] = ProductArray[y];
-								datesForParkingPass[e] = individualProducts[e+1];
-								hoursForParkingPass[e] = Integer.parseInt(individualProducts[e+3].toString());
-								itemQuantity[e] = Integer.parseInt(invoiceProducts[e+2].toString());
 							}
-							
+							y++;
 						}
-					y++;
-				}
 					
 					
 				}
-				i++;
-			}
+				
+				}
+			InvoiceArray[i] = new Invoice(invoiceCode, customer, person, date, invoiceProducts);
+			i++;
 		}	
+		
+			
+		System.out.println("Executive Summary Report:");
+		System.out.println("===========================================================");
+		System.out.printf("%10s %10s %10s %10s %10s %10s %10s %10s", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+				
+				
 	}
-
 }
