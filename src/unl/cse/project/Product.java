@@ -13,38 +13,65 @@ package unl.cse.project;
 
 
 
+
 public class Product {
 
-	protected static String productCode;
-	protected static String productType;
+	protected String productCode;   
+	protected String productType;
+	private int itemQuantity;
 
 	
 	public Product(String productCode, String productType){
-		Product.productCode = productCode;
-		Product.productType = productType;
+		this.productCode = productCode;
+		this.productType = productType;
 	}
 
 
-	public  String getProductCode() {
+	public String getProductCode() {
 		return productCode;
 	}
 
 
-	public  void setProductCode(String productCode) {
-		Product.productCode = productCode;
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
 	}
 
 
-	public static String getProductType() {
+	public String getProductType() {
 		return productType;
 	}
 
 
-	public static void setProductType(String productType) {
-		Product.productType = productType;
+	public int getItemQuantity() {
+		return itemQuantity;
 	}
+	public void setItemQuantity(int itemQuantity){
+		this.itemQuantity = itemQuantity;
+	}
+
+
+	public void setSeats(String[] seats) {
+	}
+
+
+	public void setHours(int hours) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public void setDate(String date) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
+
+
+	
 	
 	
 	
 }
-
