@@ -6,27 +6,31 @@ public class PSL extends Product{
 
 	private String ticketCode;
 	private double licenseFee;
+	private String ticket;
+	private String[] seats;
 	
-		public PSL(String productCode, String productType, double licenseFee, String ticketCode){
+		public PSL(String productCode, String productType, double licenseFee, String ticket){
 			super(productCode, productType);
-			this.ticketCode = ticketCode;
+			this.ticket = ticket;
 			this.licenseFee = licenseFee;
+		}
+
+		public String[] getSeats() {
+			return seats;
+		}
+
+		@Override
+		public void setSeats(String[] seats) {
+			this.seats = seats;
 		}
 
 		public String getTicketCode() {
 			return ticketCode;
 		}
 
-		public void setTicketCode(String ticketCode) {
-			this.ticketCode = ticketCode;
-		}
-
 		public double getLicenseFee() {
 			return licenseFee;
 		}
 
-		public void setLicenseFee(double licenseFee) {
-			this.licenseFee = licenseFee;
-		}
 		
 }
