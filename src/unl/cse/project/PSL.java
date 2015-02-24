@@ -1,47 +1,37 @@
 package unl.cse.project;
 
 
-public class ParkingPass extends Product{
+public class PSL extends Product{
+	//Constructor for PSL
 	
-	private double hourlyFee;
-	private Venues venue;
-	private int hours;
-	private String date;
+
+	private String ticketCode;
+	private double licenseFee;
+	private String ticket;
+	private String[] seats;
 	
-	
-	
-	
-	//Constructor for parking-pass
-		public ParkingPass(String productCode, String productType, Venues venue, double hourlyFee){
+		public PSL(String productCode, String productType, double licenseFee, String ticket){
 			super(productCode, productType);
-			this.hourlyFee = hourlyFee;
-			this.venue = venue;
-		}
-		public double getHourlyFee() {
-			return hourlyFee;
+			this.ticket = ticket;
+			this.licenseFee = licenseFee;
 		}
 
-		public void setHourlyFee(double hourlyFee) {
-			this.hourlyFee = hourlyFee;
+		public String[] getSeats() {
+			return seats;
 		}
 
 		@Override
-		public void setHours(int hours){
-			this.hours = hours;
+		public void setSeats(String[] seats) {
+			this.seats = seats;
 		}
-		@Override
-		public void setDate(String date){
-			this.date = date;
+
+		public String getTicketCode() {
+			return ticketCode;
 		}
-		public int getHours(){
-			return hours;
+
+		public double getLicenseFee() {
+			return licenseFee;
 		}
-		public String getDate(){
-			return date;
-		}
+
 		
-		public double getSubTotalPP(){
-			return this.hourlyFee * this.hours;
-		}
-			
 }
