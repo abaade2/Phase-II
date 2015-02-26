@@ -15,68 +15,64 @@ public class GameTicket extends Product{
 		this.team1 = team1;
 		this.team2 = team2;
 		this.pricePerUnit = pricePerUnit;
-		this.setVenue(venue);
+		this.venue = venue;
 	}
-
-
-
+	@Override
+	public void printGameTicket(){
+		System.out.printf("%s %10s %s %s vs %s $%15.2f $%5.2f $%4.2f\n",
+				this.productCode, "GameTicket", this.dateTime, this.team1, this.team2, this.getSubtotal(), this.getTax(), this.getTotal());
+		System.out.printf("%10s%d units @ $%10f/unit)", "(", this.itemQuantity, this.pricePerUnit);
+		
+	}
+	
+	@Override
+	public double getTax(){
+		return this.getSubtotal() * 0.06;
+	}
+	@Override
+	public double getSubtotal(){
+		return this.pricePerUnit * this.getItemQuantity();
+	}
+	
 	public String getDateTime() {
 		return dateTime;
 	}
-
-
-
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
-
-
-
 	public String getTeam1() {
 		return team1;
 	}
-
-
-
-	public void setTeam1(String team1) {
-		this.team1 = team1;
-	}
-
-
-
 	public String getTeam2() {
 		return team2;
 	}
-
-
-
-	public void setTeam2(String team2) {
-		this.team2 = team2;
-	}
-
-
-
 	public double getPricePerUnit() {
 		return pricePerUnit;
 	}
-
-
-
-	public void setPricePerUnit(double pricePerUnit) {
-		this.pricePerUnit = pricePerUnit;
-	}
-
-
-
-	public Venues getVenue() {
-		return venue;
-	}
-
-
-
-	public void setVenue(Venues venue) {
-		this.venue = venue;
-	}
 	
+	
+	
+	
+	
+	@Override
+	public void printSeasonPass() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void printParkingPass() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void printPSL() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void printRefreshments() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
