@@ -30,7 +30,7 @@ public abstract class Product {
 	
 	@Override
 	public String toString(){
-		return this.productCode +" "+ this.productType + " " +this.itemQuantity;
+		return this.productCode + this.productType  +this.itemQuantity;
 	}
 
 
