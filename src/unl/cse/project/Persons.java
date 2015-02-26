@@ -11,8 +11,6 @@ package unl.cse.project;
  * This class is the constructor for the person object.
  */
 
-
-
 public class Persons {
 	private String personCode;
 	private Name name;
@@ -28,6 +26,10 @@ public class Persons {
 	}
 	
 	
+	@Override
+	public String toString(){
+		return name.toString();
+	}
 	//Getters and Setters:
 	public String getPersonCode() {
 		return personCode;
@@ -37,7 +39,7 @@ public class Persons {
 		this.personCode = personCode;
 	}
 
-	public Name getString() {
+	public Name getName() {
 		return name;
 	}
 
