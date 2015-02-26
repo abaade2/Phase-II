@@ -16,6 +16,7 @@ public class ParkingPass extends Product{
 			this.hourlyFee = hourlyFee;
 			this.venue = venue;
 		}
+		
 		public double getHourlyFee() {
 			return hourlyFee;
 		}
@@ -23,7 +24,6 @@ public class ParkingPass extends Product{
 		public void setHourlyFee(double hourlyFee) {
 			this.hourlyFee = hourlyFee;
 		}
-
 		@Override
 		public void setHours(int hours){
 			this.hours = hours;
@@ -39,8 +39,45 @@ public class ParkingPass extends Product{
 			return date;
 		}
 		
-		public double getSubTotalPP(){
+		@Override
+		public double getSubtotal(){
 			return this.hourlyFee * this.hours;
 		}
+		@Override
+		public double getTax(){
+			return this.getSubtotal() * 0.04;
+		}
+
+		@Override
+		public void printGameTicket() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void printSeasonPass() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void printParkingPass() {
+			System.out.printf("%s %10s %s (%d/units @ $%f/hr for %d hours  $%15.2f $%5.2f $%4.2f\n"
+					, this.productCode, "Parking Pass", this.date, this.itemQuantity, this.hourlyFee, this.hours, this.getSubtotal(), this.getTax(), this.getTotal());
+			
+		}
+
+		@Override
+		public void printPSL() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void printRefreshments() {
+			// TODO Auto-generated method stub
+			
+		}
+		
 			
 }
