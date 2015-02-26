@@ -24,7 +24,7 @@ import java.io.FileNotFoundException;
 
 
 public class InvoiceReport {
-	public static void main(String[] args) {		
+public static void main(String[] args) {		
 		//New scanner that reads in the Persons data file
 		String fileName = "data/Persons.dat";
 		Scanner t = null;
@@ -63,6 +63,7 @@ public class InvoiceReport {
 			Persons[i] = newPerson;
 			i++;
 		}		
+		
 		
 /*		//Converting array to xml file
 		File xmlOut2 = new File("data/Persons.xml");
@@ -242,7 +243,6 @@ public class InvoiceReport {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 			//New scanner that reads in the Product data file
 			fileName = "data/Products.dat";
 			Scanner p = null;
@@ -266,29 +266,24 @@ public class InvoiceReport {
 				//The string is now split along the delimiter
 				String productCode = tokens[0];
 				String productType = tokens[1];
-			
 				if(productType.equals("TG")){//game ticket
-					
-					String venueCode = tokens[2];
-					
-					Venues venue2 = null;
-					
+					String venueCode = tokens[2];	
+					Venues venue2 = null;	
 					int j = 0;
 					while(j<Venues.length){
 						if(Venues[j].getVenueCode().contains(venueCode)){
 							venue2 =Venues[j];
 						}
 						j++;
-					}
-					
+					}	
 					String dateTime = tokens[3];
 					String team1 = tokens[4];
 					String team2 = tokens[5];
 					double pricePerUnit = Double.parseDouble(tokens[6]);
 					
 					if(venue2 != null){
-					Product newProduct = new GameTicket(productCode, productType, venue2, dateTime, team1, team2, pricePerUnit);
-					ProductArray[i] = newProduct;
+						Product newProduct = new GameTicket(productCode, productType, venue2, dateTime, team1, team2, pricePerUnit);
+						ProductArray[i] = newProduct;
 					}else{
 						Product newProduct = new GameTicket(productCode, productType, null, dateTime, team1, team2, pricePerUnit);
 						ProductArray[i] = newProduct;
@@ -304,9 +299,7 @@ public class InvoiceReport {
 
 				}
 				else if(productType.equals("SP")){//parking pass
-					
 					String venueCode = tokens[2];
-					
 					Venues venue2= null;
 					int j = 0;
 					while(j<Venues.length){
@@ -314,17 +307,74 @@ public class InvoiceReport {
 							venue2 = Venues[j];
 						}
 						j++;
-					}
-									
+					}			
 					double hourlyFee = Double.parseDouble(tokens[3]);
 					Product newProduct = new ParkingPass(productCode, productType, venue2, hourlyFee);
-					ProductArray[i] = newProduct;				}
+					ProductArray[i] = newProduct;			
+				}
 				else if(productType.equals("SL")){//psl
 					String ticketCode = tokens[2];
 					double licenseFee = Double.parseDouble(tokens[3]);
-					Product newProduct = new PSL(productCode, productType, licenseFee, ticketCode);
+					GameTicket ticket= null;
+					SeasonPass pass = null;
+					///////////////////////////////////////
+					//new scanner to specifically look for the ticket the GameTicket or seasonpass that the PSL is referring to
+					Scanner ww = null;
+					try {
+						ww = new Scanner(new File(fileName));
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} 
+					String productCodeArray[] = new String[ww.nextInt()];
+					ww.nextLine();
+					while(ww.hasNext()){
+						String aLine = ww.nextLine();
+						//split the string with the delimiter ";" into a string array
+						String[] tokens83 = aLine.split(";");
+						//The string is now split along the delimiter
+						String gameTicketCode = tokens83[0];	
+						if(ticketCode.equals(gameTicketCode)){
+							String productType1 = tokens83[1];
+							//if the psl is referring to a gameticket
+							if(productType1.equals("TG")){
+								String venueCode = tokens83[2];	
+								Venues venue2 = null;	
+								int j = 0;
+								while(j<Venues.length){
+									if(Venues[j].getVenueCode().contains(venueCode)){
+										venue2 =Venues[j];
+									}
+									j++;
+								}	
+								String dateTime = tokens83[3];
+								String team1 = tokens83[4];
+								String team2 = tokens83[5];
+								double pricePerUnit = Double.parseDouble(tokens83[6]);
+								
+								if(venue2 != null){
+									ticket = new GameTicket(gameTicketCode, productType1, venue2, dateTime, team1, team2, pricePerUnit);
+								}else{
+									ticket = new GameTicket(gameTicketCode, productType1, null, dateTime, team1, team2, pricePerUnit);
+								}
+							}
+							else{
+								String team = tokens83[2];	
+								String startDate = tokens83[3];
+								String endDate = tokens83[4];
+								double cost = Double.parseDouble(tokens83[5]);
+								pass = new SeasonPass(gameTicketCode, productType1, team, startDate, endDate, cost);
+							}
+						}
+					}
+					Product newProduct = null;
+					
+					if(ticket != null){
+						newProduct = new PSL(productCode, productType, licenseFee, ticket, null);
+					}else{
+						newProduct = new PSL(productCode, productType, licenseFee, null, pass);
+					}
 					ProductArray[i] = newProduct;
-
+				
 				}
 				else if(productType.equals("SR")){//refreshment
 					String name = tokens[2];
@@ -368,7 +418,7 @@ public class InvoiceReport {
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
+	
 			//New scanner that reads in the Product data file
 			fileName = "data/Invoices.dat";
 			Scanner z = null;
@@ -411,35 +461,35 @@ public class InvoiceReport {
 				}
 				String date = tokens[3];
 				String Products = tokens[4];
-				String[] splitProducts = tokens[4].split(",");
+				String[] splitProducts = tokens[4].split(","); //the whole token of products split into individual products
 				String[] individualProducts = null;
-				Product[] invoiceProducts = null;
+				Product[] invoiceProducts = null;//variable to hold the array of products
 				String[] seats = null;
 				int y = 0;
 				int counter = 0;
-				for(int e = 0; e<splitProducts.length; e++){
-					individualProducts = splitProducts[e].split(":");
-					while(y<individualProducts.length){
-						for(int l = 0;l<ProductArray.length;l++){
-							if(ProductArray[l].getProductCode().contains(individualProducts[e])){
-								if(ProductArray[y].getClass() == SeasonPass.class){
-									invoiceProducts[e] = ProductArray[y];
+				for(int e = 0; e<splitProducts.length; e++){ //goes through each product and splits it 
+					individualProducts = splitProducts[e].split(":");//splits the individual product into its separate parts
+					while(y<individualProducts.length){ //goes through the individual product
+						for(int l = 0;l<ProductArray.length;l++){//goes through the already parsed product array
+							if(ProductArray[l].getProductCode().contains(individualProducts[e])){//if the product codes match
+								if(ProductArray[l].getProductType().equals("TS")){//season pass
+									invoiceProducts[e] = ProductArray[l];
 									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+1].toString()));
-								}else if(ProductArray[y].getClass() == Refreshments.class){
-									invoiceProducts[e] = ProductArray[y];
+								}else if(ProductArray[y].getProductType().equals("SR")){//refreshment
+									invoiceProducts[e] = ProductArray[l];
 									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+1].toString()));
-								}else if(ProductArray[y].getClass() == PSL.class){
-									invoiceProducts[e] = ProductArray[y];
+								}else if(ProductArray[y].getProductType().equals("SL")){//psl
+									invoiceProducts[e] = ProductArray[l];
 									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+1].toString()));
 									for(int v = 2; v<individualProducts.length; v++){
 										seats[counter] = invoiceProducts[v].toString();
 										counter++;
 									}
 									invoiceProducts[e].setSeats(seats);
-								}else if(ProductArray[y].getClass() == GameTicket.class){
+								}else if(ProductArray[y].getProductType().equals("TG")){//gameticket
 									invoiceProducts[e] = ProductArray[y];
 									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+1].toString()));
-								}else if(ProductArray[y].getClass() == ParkingPass.class){
+								}else if(ProductArray[y].getProductType().equals("SP")){//parking pass
 									invoiceProducts[e] = ProductArray[y];
 									invoiceProducts[e].setItemQuantity(Integer.parseInt(invoiceProducts[e+2].toString()));
 									invoiceProducts[e].setDate(invoiceProducts[e+1].toString());
@@ -451,26 +501,71 @@ public class InvoiceReport {
 						}
 					
 					
+					}
+					InvoiceArray[i] = new Invoice(invoiceCode, customer, person, date, invoiceProducts);
+					i++;
 				}
-				
-				}
-			InvoiceArray[i] = new Invoice(invoiceCode, customer, person, date, invoiceProducts);
-			i++;
 		}	
 		
 			
 		System.out.println("Executive Summary Report:");
 		System.out.println("===========================================================");
-		System.out.printf("%10s %10s %10s %10s %10s %10s %10s %10s", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total");
+		System.out.printf("%10s %10s %10s %10s %10s %10s %10s %10s\n", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total");
+		for(int o =0; o<InvoiceArray.length; o++){
+			InvoiceArray[o].printSummary();
+		}
+		System.out.println("===========================================================");
+		double subtotal=0, fees=0, taxes=0, discount=0, total=0;
+		for(int o=0; o<InvoiceArray.length; o++){
+			subtotal += InvoiceArray[o].calculateSubtotal();
+			fees += InvoiceArray[o].getCustomer().getFee();
+			taxes += InvoiceArray[o].calculateTax();
+			discount += InvoiceArray[o].calculateDiscount();
+			total += InvoiceArray[o].calculateFinal();
+		}
+		System.out.printf("%s %10f %10f %10f %10f %10f\n", "TOTALS", subtotal, fees, taxes, discount, total);
+
 		
+		System.out.println("Individual Invoice Detail Reports:");
+		System.out.println("===========================================================");
+		for(int v = 0; v<InvoiceArray.length; v++){
+			System.out.println("Invoice " + InvoiceArray[v].getInvoiceCode());
+			System.out.println("===========================================================");
+			System.out.println("Salesperson:" + InvoiceArray[v].getSalesPerson());
+			System.out.println("Customer Info");
+			InvoiceArray[v].getCustomer().printCustomer();
+			System.out.println("-------------------------------------------------------");
+			System.out.printf("%s %10s %80s %10s %10s\n", "Code", "Item", "Tax", "Total");
+			if(InvoiceArray[v].getProduct()[v].getProductType().equals("TG")){
+				InvoiceArray[v].getProduct()[v].printGameTicket();
+			}
+			if(InvoiceArray[v].getProduct().equals("SP")){
+				InvoiceArray[v].getProduct()[v].printParkingPass();
+			}
+			if(InvoiceArray[v].getProduct().equals("SL")){
+				InvoiceArray[v].getProduct()[v].printPSL();	
+			}
+			if(InvoiceArray[v].getProduct().equals("TS")){
+				InvoiceArray[v].getProduct()[v].printSeasonPass();
+			}
+			if(InvoiceArray[v].getProduct().equals("SR")){
+				InvoiceArray[v].getProduct()[v].printSeasonPass();
+			}
+			System.out.println("											===========================================================");
+			System.out.printf("SUBTOTALS: %50f %10f %10f\n", InvoiceArray[v].calculateSubtotal(), InvoiceArray[v].calculateTax(), InvoiceArray[v].calculateTotal());
+			System.out.printf("DISCOUNT ( %d% ) $-%60s\n", InvoiceArray[v].getCustomer().getDiscountPercentage(),InvoiceArray[v].calculateDiscount());
+			System.out.printf("ADDITIONAL FEE ( %d ) $%60s\n", InvoiceArray[v].getCustomer().getFee());
+			System.out.printf("TOTAL $%60s\n", InvoiceArray[v].calculateFinal());
+			if(InvoiceArray[v].calculateSavings() > 0){
+				System.out.printf("				You saved $%.2f\n", InvoiceArray[v].calculateSavings());
+			}
+			else{
+				System.out.println("Thank you for your purchase!");
+			}
+			
+		}
 		
-		
-		
-		
-		
-		
-		
-		
+		System.out.println("=========================================================================================================");
 		
 		
 		
