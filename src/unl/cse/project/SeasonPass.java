@@ -15,7 +15,15 @@ public class SeasonPass extends Product{
 			this.endDate = endDate;
 			this.cost = cost;
 		}
-
+		
+		@Override
+		public double getSubtotal(){
+			return this.cost * this.getItemQuantity();
+		}
+		@Override
+		public double getTax(){
+			return this.getSubtotal() * 0.06;
+		}
 
 		public String getTeam() {
 			return team;
@@ -55,6 +63,39 @@ public class SeasonPass extends Product{
 		public void setCost(double cost) {
 			this.cost = cost;
 		}
+
+		@Override
+		public void printGameTicket() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void printSeasonPass() {
+			System.out.printf("%s %10s- %s $%15.2f $%5.2f $%4.2f\n",
+					this.productCode, "SeasonPass", this.team, this.getSubtotal(), this.getTax(), this.getTotal());
+			System.out.printf("%10s%d units @ $%10f/unit prorated 100/150 days)", "(", this.itemQuantity, this.cost);	
+		}
+
+		@Override
+		public void printParkingPass() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void printPSL() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void printRefreshments() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
 		
 		
 }
