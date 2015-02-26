@@ -23,7 +23,9 @@ public class Name {
 	 this.lName = lName;
 	 }
 	 
-	 
+	 public String toString(){
+		 return this.lName + "," +this.fName;
+	 }
 	 /*
 		String parts[] = name.split(",");
 		Name Name = new Name(parts[0], parts[1]);

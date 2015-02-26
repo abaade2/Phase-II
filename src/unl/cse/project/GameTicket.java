@@ -74,5 +74,11 @@ public class GameTicket extends Product{
 		// TODO Auto-generated method stub
 		
 	}
+	public Venues getVenue() {
+		return venue;
+	}
+	public void setVenue(Venues venue) {
+		this.venue = venue;
+	}
 	
 }

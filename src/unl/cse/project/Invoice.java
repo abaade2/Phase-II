@@ -23,30 +23,34 @@ private String invoiceCode;
 	}
 
 	
-	
+	public String toString(){
+		return this.invoiceCode;
+	}
 	public void printSummary(){
-		System.out.printf("%s %s %s %f %f %f %f\n", this.invoiceCode, this.customer.toString(), this.salesPerson, this.calculateSubtotal(), this.customer.getFee(), this.calculateTax(), this.calculateDiscount(), this.calculateFinal());
+		System.out.printf("%s %10s %10s %10.2f %10.2f %10.2f %10.2f\n", this.invoiceCode, this.customer.toString(), this.salesPerson.toString(), this.calculateSubtotal(), this.customer.getFee(), this.calculateTax(), this.calculateDiscount(), this.calculateFinal());
 	}
 
 	//calculates the total subtotal of all products on a specific invoice
 	public double calculateSubtotal(){
 		int i = 0;
 		double subtotal = 0;
-		for(i=0; i<product.length; i++){
+		
+		//for(i=0; i<product.length; i++){
 			//if the product is a refreshment 
-			if(product[i].getProductType().equals("SR")){
-				for(int j = 0; j<product.length; j++){
+			/*if(product[i].getProductType().equals("SR")){		
+				for(Product pro: product){
 					//if there is a gameticket or seasonpass purchased in the invoice the refreshment has a 5% discount
-					if(product[j].getProductType().equals("TS") || product[j].getProductType().equals("TG")){
+					//System.out.println(product[j].getProductCode());
+					if(pro.getProductType().equals("TS") || pro.getProductType().equals("TG")){
 						subtotal += (product[i].getSubtotal() * .05) - product[i].getSubtotal();
-					}
+					}*/
 							
-				}
-			}
-			else{
+		//		}
+		//	}
+		//	else{
 				subtotal += product[i].getSubtotal();
-			}
-		}
+		//	}
+		//}
 		return subtotal;
 	}
 	
@@ -65,7 +69,7 @@ private String invoiceCode;
 		}
 		//if the customer is a nonmember they have no discount
 		else{
-			return 0;
+			return discount;
 		}
 	}
 	
