@@ -13,7 +13,6 @@ package unl.cse.project;
 
 
 
-
 public abstract class Product {
 
 	protected String productCode;   
@@ -68,12 +67,26 @@ public abstract class Product {
 	public void setDate(String date) {} //method to keep the date of the parking pass
 	public void setHours(int hours){} //method to keep the hours of the parking pass
 	public void setSeats(String[] seats){} //method to keep the seasts for the PSL	
-	
+	public double calculateTotalDays(){return 0;};
 	
 	public abstract void printGameTicket();
 	public abstract void printSeasonPass();
 	public abstract void printParkingPass();
 	public abstract void printPSL();
 	public abstract void printRefreshments();
+
+
+
+	public DateTime getEndDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public double getCost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }
