@@ -32,18 +32,19 @@ public class Customer {
 	 }
 	
 	public double getFee(){
-		if(this.type == "M"){
-			return 120;
-		}else if(this.type == "A"){
-			return 150;
-		}else return 0;	
+		if(this.type.equals("M")){
+			return 120.0;
+		}else if(this.type.equals("A")){
+			return 150.0;
+		}else return 0.0;	
 	}
 
 	public void printCustomer(){
 		System.out.println(this.name + "(" + this.customerCode + ")");
 		System.out.println("[" + this.type +"]");
 		System.out.println(this.primaryContact.getName());
-		System.out.println(this.address);
+		System.out.println(this.address.getStreet());
+		System.out.println(this.address.getCity() + " " + this.address.getState() + " "+ this.address.getZipcode() + " "+ this.address.getCountry());
 	}
 	
 	@Override
