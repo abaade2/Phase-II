@@ -1,14 +1,16 @@
 package unl.cse.project;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 public class SeasonPass extends Product{
 	private String team;
-	private String startDate;
-	private String endDate;
+	private DateTime startDate;
+	private DateTime endDate;
 	private double cost;
 	
 	
 	//Constructor for season-passes
-		public SeasonPass(String productCode, String productType, String team, String startDate, String endDate, double cost){
+		public SeasonPass(String productCode, String productType, String team, DateTime startDate, DateTime endDate, double cost){
 			super(productCode, productType);
 			this.team = team;
 			this.startDate = startDate;
@@ -17,8 +19,13 @@ public class SeasonPass extends Product{
 		}
 		
 		@Override
+		public double calculateTotalDays(){
+			return Days.daysBetween(startDate, endDate).getDays();		
+		}
+		
+		@Override
 		public double getSubtotal(){
-			return this.cost * this.getItemQuantity();
+			return this.cost;
 		}
 		@Override
 		public double getTax(){
@@ -28,6 +35,8 @@ public class SeasonPass extends Product{
 		public String getTeam() {
 			return team;
 		}
+		
+		
 
 
 		public void setTeam(String team) {
@@ -35,26 +44,26 @@ public class SeasonPass extends Product{
 		}
 
 
-		public String getStartDate() {
+		public DateTime getStartDate() {
 			return startDate;
 		}
 
 
-		public void setStartDate(String startDate) {
+		public void setStartDate(DateTime startDate) {
 			this.startDate = startDate;
 		}
 
-
-		public String getEndDate() {
+		@Override
+		public DateTime getEndDate() {
 			return endDate;
 		}
 
 
-		public void setEndDate(String endDate) {
+		public void setEndDate(DateTime endDate) {
 			this.endDate = endDate;
 		}
 
-
+		@Override
 		public double getCost() {
 			return cost;
 		}
@@ -73,8 +82,7 @@ public class SeasonPass extends Product{
 		@Override
 		public void printSeasonPass() {
 			System.out.printf("%s %10s- %s $%15.2f $%5.2f $%4.2f\n",
-					this.productCode, "SeasonPass", this.team, this.getSubtotal(), this.getTax(), this.getTotal());
-			System.out.printf("%10s%d units @ $%10f/unit prorated 100/150 days)", "(", this.itemQuantity, this.cost);	
+					this.productCode, "SeasonPass", this.team, this.getSubtotal(), this.getTax(), this.getTotal());	
 		}
 
 		@Override
