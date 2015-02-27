@@ -1,6 +1,5 @@
 package unl.cse.project;
 
-
 public class Refreshments extends Product{
 	
 	private double cost;
@@ -13,7 +12,7 @@ public class Refreshments extends Product{
 		}
 		@Override
 		public double getSubtotal(){
-			return this.cost * this.getItemQuantity();
+			return this.cost;
 		}
 		@Override
 		public double getTax(){
@@ -55,7 +54,6 @@ public class Refreshments extends Product{
 		public void printRefreshments() {
 			System.out.printf("%s %10s (%d units @ $%.2f/unit) $%15.2f $%5.2f $%4.2f\n",
 					this.productCode, this.name, this.itemQuantity, this.cost, this.getSubtotal(), this.getTax(), this.getTotal());
-			
 		}
 		
 }
