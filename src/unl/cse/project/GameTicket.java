@@ -1,5 +1,4 @@
 package unl.cse.project;
-
 public class GameTicket extends Product{
 	private String dateTime;
 	private String team1;
@@ -21,7 +20,7 @@ public class GameTicket extends Product{
 	public void printGameTicket(){
 		System.out.printf("%s %10s %s %s vs %s $%15.2f $%5.2f $%4.2f\n",
 				this.productCode, "GameTicket", this.dateTime, this.team1, this.team2, this.getSubtotal(), this.getTax(), this.getTotal());
-		System.out.printf("%10s%d units @ $%10f/unit)", "(", this.itemQuantity, this.pricePerUnit);
+		System.out.printf("%10s%d units @ $%10.2f/unit)\n", "(", this.itemQuantity, this.pricePerUnit);
 		
 	}
 	
@@ -73,12 +72,6 @@ public class GameTicket extends Product{
 	public void printRefreshments() {
 		// TODO Auto-generated method stub
 		
-	}
-	public Venues getVenue() {
-		return venue;
-	}
-	public void setVenue(Venues venue) {
-		this.venue = venue;
 	}
 	
 }
