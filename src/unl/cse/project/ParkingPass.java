@@ -62,7 +62,7 @@ public class ParkingPass extends Product{
 
 		@Override
 		public void printParkingPass() {
-			System.out.printf("%s %10s %s (%d/units @ $%f/hr for %d hours  $%15.2f $%5.2f $%4.2f\n"
+			System.out.printf("%s %10s %s (%10d/units @ $%.2f/hr for %d hours  $%15.2f $%5.2f $%4.2f\n"
 					, this.productCode, "Parking Pass", this.date, this.itemQuantity, this.hourlyFee, this.hours, this.getSubtotal(), this.getTax(), this.getTotal());
 			
 		}
@@ -77,14 +77,6 @@ public class ParkingPass extends Product{
 		public void printRefreshments() {
 			// TODO Auto-generated method stub
 			
-		}
-
-		public Venues getVenue() {
-			return venue;
-		}
-
-		public void setVenue(Venues venue) {
-			this.venue = venue;
 		}
 		
 			
