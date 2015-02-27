@@ -292,8 +292,10 @@ public static void main(String[] args) {
 				}
 				else if(productType.equals("TS")){//season pass
 					String team = tokens[2];
-					String startDate = tokens[3];
-					String endDate = tokens[4];
+					String[] startDate1 = tokens[3].split("-");
+					DateTime startDate = new DateTime(Integer.parseInt(startDate1[0]), Integer.parseInt(startDate1[1]), Integer.parseInt(startDate1[2]), 0, 0);
+					String[] endDate1 = tokens[4].split("-");
+					DateTime endDate = new DateTime(Integer.parseInt(endDate1[0]), Integer.parseInt(endDate1[1]), Integer.parseInt(endDate1[2]), 0, 0);
 					double cost = Double.parseDouble(tokens[5]);
 					Product newProduct = new SeasonPass(productCode, productType, team, startDate, endDate, cost);
 					ProductArray[i] = newProduct;
@@ -358,9 +360,11 @@ public static void main(String[] args) {
 								}
 							}
 							else{
-								String team = tokens83[2];	
-								String startDate = tokens83[3];
-								String endDate = tokens83[4];
+								String team = tokens83[2];
+								String[] startDate1 = tokens83[3].split("-");
+								DateTime startDate = new DateTime(Integer.parseInt(startDate1[0]), Integer.parseInt(startDate1[1]), Integer.parseInt(startDate1[2]), 0, 0);
+								String[] endDate1 = tokens83[4].split("-");
+								DateTime endDate = new DateTime(Integer.parseInt(endDate1[0]), Integer.parseInt(endDate1[1]), Integer.parseInt(endDate1[2]), 0, 0);
 								double cost = Double.parseDouble(tokens83[5]);
 								pass = new SeasonPass(gameTicketCode, productType1, team, startDate, endDate, cost);
 							}
@@ -460,7 +464,8 @@ public static void main(String[] args) {
 					}
 					h++;
 				}
-				String date = tokens[3];
+				String[] date1 = tokens[3].split("-");
+				DateTime date = new DateTime(Integer.parseInt(date1[0]), Integer.parseInt(date1[1]), Integer.parseInt(date1[2]), 0, 0);
 				String[] splitProducts = tokens[4].split(","); //the whole token of products split into individual products
 				String[] individualProducts =null;
 //				ArrayList<String> indPro = new ArrayList<String>();
@@ -469,7 +474,6 @@ public static void main(String[] args) {
 //				}
 				//Product[] invoiceProducts = new Product[splitProducts.length];//variable to hold the array of products
 				ArrayList<Product> invoiceProducts = new ArrayList<Product>();
-				String[] seats = new String[5];
 				
 				for(int c = 0; c<splitProducts.length;c++){
 					individualProducts = splitProducts[c].split(":");//splits the individual product into separate parts
@@ -481,7 +485,6 @@ public static void main(String[] args) {
 							if(tempProd.getProductCode().equals(individualProducts[0])){//if the product codes match
 								
 								if(tempProd.getProductType().equals("TS")){//season pass
-									
 									tempProd.setItemQuantity(Integer.parseInt(individualProducts[1].toString()));
 									invoiceProducts.add(tempProd);
 									break;
@@ -493,8 +496,8 @@ public static void main(String[] args) {
 									
 								}else if(tempProd.getProductType().equals("SL")){//psl
 									tempProd.setItemQuantity(Integer.parseInt(individualProducts[1].toString()));
-									
-									for(int v = 0; v<individualProducts.length-2; v++){
+									String[] seats = new String[individualProducts.length-2];
+									for(int v = 0; v<(individualProducts.length-2); v++){
 											String thing = individualProducts[v+2].toString();
 											seats[v] = thing;
 									}
@@ -530,14 +533,14 @@ public static void main(String[] args) {
 				
 		}	
 		
-			//System.out.println(InvoiceArray);
+			
 		System.out.println("Executive Summary Report:");
-		System.out.println("===========================================================");
-		System.out.printf("%10s %10s %10s %10s %10s %10s %10s %10s\n", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total");
+		System.out.println("=========================");
+		System.out.printf("%-10s %-20s %-20s %11s %7s %11s %11s %11s\n", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total");
 		for(Invoice butt:InvoiceArray){
 			butt.printSummary();
 		}
-		System.out.println("===========================================================");
+		System.out.println("=========================================================================================================");
 		double subtotal=0, fees=0, taxes=0, discount=0, total=0;
 		for(Invoice cow: InvoiceArray){
 			subtotal += cow.calculateSubtotal();
@@ -546,11 +549,11 @@ public static void main(String[] args) {
 			discount += cow.calculateDiscount();
 			total += cow.calculateFinal();
 		}
-		System.out.printf("%s %10.2f %10.2f %10.2f %10.2f %10.2f\n", "TOTALS", subtotal, fees, taxes, discount, total);
+		System.out.printf("%-52s $%10.2f $%6.2f $%10.2f $%10.2f $%10.2f\n\n\n\n", "TOTALS", subtotal, fees, taxes, discount, total);
 
 		
 		System.out.println("Individual Invoice Detail Reports:");
-		System.out.println("===========================================================");
+		System.out.println("==================================");
 		for(Invoice hog: InvoiceArray){
 			System.out.println("Invoice " + hog.getInvoiceCode());
 			System.out.println("===========================================================");
@@ -560,37 +563,39 @@ public static void main(String[] args) {
 			System.out.println("-------------------------------------------------------");
 			System.out.printf("%s %10s %80s %10s\n", "Code", "Item", "Tax", "Total");
 			for(Product pro: hog.getProduct()){
-			if(pro.getProductType().equals("TG")){
-				pro.printGameTicket();
+				if(pro.getProductType().equals("TG")){
+					pro.printGameTicket();
+				}
+				if(pro.getProductType().equals("SP")){
+					pro.printParkingPass();
+				}
+				if(pro.getProductType().equals("SL")){
+					pro.printPSL();	
+				}
+				if(pro.getProductType().equals("TS")){
+					pro.printSeasonPass();
+					int daysLeft = Days.daysBetween(hog.getDate(), pro.getEndDate()).getDays();
+					System.out.printf("%10s%d units @ $%10f/unit prorated %d/%.0f days)\n", "(", pro.getItemQuantity(), pro.getCost(), daysLeft, pro.calculateTotalDays());
+				}
+				if(pro.getProductType().equals("SR")){
+					pro.printRefreshments();
+				}
 			}
-			if(pro.equals("SP")){
-				pro.printParkingPass();
-			}
-			if(pro.equals("SL")){
-				pro.printPSL();	
-			}
-			if(pro.equals("TS")){
-				pro.printSeasonPass();
-			}
-			if(pro.equals("SR")){
-				pro.printSeasonPass();
-			}
-			}
-			System.out.println("											===========================================================");
-			System.out.printf("SUBTOTALS: %50f %10f %10f\n", hog.calculateSubtotal(), hog.calculateTax(), hog.calculateTotal());
-			System.out.printf("DISCOUNT ( %f ) $-%60f\n", hog.getCustomer().getDiscountPercentage(), hog.calculateDiscount());
-			System.out.printf("ADDITIONAL FEE $%60f\n", hog.getCustomer().getFee());
-			System.out.printf("TOTAL $%60f\n", hog.calculateFinal());
+			System.out.println("===========================================================");
+			System.out.printf("%-60s %10.2f %10.2f %10.2f\n", "SUBTOTALS", hog.calculateSubtotal(), hog.calculateTax(), hog.calculateTotal());
+			System.out.printf("%-60s ( %.0f%% ) $-%10.2f\n", "DISCOUNT", hog.getCustomer().getDiscountPercentage(), hog.calculateDiscount());
+			System.out.printf("%-60s $%10.2f\n", "ADDITIONAL FEE", hog.getCustomer().getFee());
+			System.out.printf("%-60s $%10.2f\n", "TOTAL", hog.calculateFinal());
 			if(hog.calculateSavings() > 0){
-				System.out.printf("				You saved $%.2f\n", hog.calculateSavings());
+				System.out.printf("				You saved $%.2f\n\n\n\n\n\n", hog.calculateSavings());
 			}
 			else{
 				System.out.println("Thank you for your purchase!");
+				System.out.println();System.out.println();System.out.println();System.out.println();
 			}
-			
 		}
 		
 		System.out.println("=========================================================================================================");
-				
+			
 	}
 }
