@@ -30,17 +30,17 @@ private String invoiceCode;
 		System.out.printf("%-10s %-20s %-20s $%10.2f $%6.2f $%10.2f $%10.2f $%10.2f\n", this.invoiceCode, this.customer.toString(), this.salesPerson.toString(), this.calculateSubtotal(), this.customer.getFee(), this.calculateTax(), this.calculateDiscount(), this.calculateFinal());
 	}
 
+	
 	//calculates the total subtotal of all products on a specific invoice
 	public double calculateSubtotal(){
 		int i = 0;
 		double subtotal = 0;
-		int check = 0;
 		for(Product prod: this.product){
 			//if the product is a refreshment
 			if(prod.getProductType().equals("SR")){
-				//check = 0;
+				int check = 0;
 				//if the product is a refreshment, the item quantity is messed up when there are multiple invoices with the same refreshment at a different quantity
-				//while(check == 0){ //to end the for loop if the search finds a gameticket or seasopass(prevents readding the price of the refreshment)
+				//while(check == 0){ //to end the for loop if the search finds a gameticket or seasopass(prevents re-adding the price of the refreshment)
 					for(Product pro: this.product){
 						//if there is a gameticket or seasonpass purchased in the invoice the refreshment has a 5% discount
 						if(pro.getProductType().equals("TS") || pro.getProductType().equals("TG")){
@@ -50,7 +50,7 @@ private String invoiceCode;
 					}
 				//}
 				//if(check ==0){
-					//subtotal += prod.getSubtotal();
+					//subtotal += prod.getSubtotal() * prod.getItemQuantity();
 				//}
 			}
 			if(prod.getProductType().equals("TS")){
@@ -67,7 +67,7 @@ private String invoiceCode;
 				subtotal += sum * prod.getItemQuantity();
 			}
 			else{
-				subtotal += prod.getSubtotal();
+				subtotal += prod.getItemQuantity() * prod.getSubtotal();
 			}
 		}
 		return subtotal;
