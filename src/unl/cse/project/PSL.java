@@ -18,13 +18,13 @@ public class PSL extends Product{
 
 		@Override
 		public double getTax(){
-			return this.getSubtotal() * 0.04;
+			return this.getItemQuantity() * this.getSubtotal() * 0.04 ;
 		}
 		@Override
 		public double getSubtotal(){
-			//item quantity of PSL * (price of 1 game ticket * .18) 
+			//(price of 1 game ticket * .18) 
 			//plus cost of license(licensefee)
-			return (this.getItemQuantity() * (this.ticket.getPricePerUnit() * .18)) + this.licenseFee;
+			return (this.ticket.getPricePerUnit() * .18) + this.licenseFee;
 		
 		}
 		
@@ -81,7 +81,7 @@ public class PSL extends Product{
 		@Override
 		public void printPSL() {
 			System.out.printf("%-10s %s [%s](%d units @ 18%% of %s with $%.2f fee) %24s $%10.2f $%10.2f $%10.2f\n",
-					this.productCode, "PSL", seatToString(this.seats), this.itemQuantity , this.ticket.getProductCode(), this.licenseFee, "", this.getSubtotal(), this.getTax(), this.getTotal());
+					this.productCode, "PSL", seatToString(this.seats), this.getItemQuantity() * this.itemQuantity , this.ticket.getProductCode(), this.licenseFee, "", this.getSubtotal(), this.getTax(), this.getTotal());
 		}
 
 		@Override
