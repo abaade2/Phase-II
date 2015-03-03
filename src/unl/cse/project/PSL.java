@@ -80,8 +80,8 @@ public class PSL extends Product{
 
 		@Override
 		public void printPSL() {
-			System.out.printf("%s %10s [%s](%d units @ 18%% of %s with $%.2f fee) $%15.2f $%5.2f $%4.2f\n",
-					this.productCode, "PSL", seatToString(this.seats), this.itemQuantity , this.ticket.getProductCode(), this.licenseFee, this.getSubtotal(), this.getTax(), this.getTotal());
+			System.out.printf("%-10s %s [%s](%d units @ 18%% of %s with $%.2f fee) %24s $%10.2f $%10.2f $%10.2f\n",
+					this.productCode, "PSL", seatToString(this.seats), this.itemQuantity , this.ticket.getProductCode(), this.licenseFee, "", this.getSubtotal(), this.getTax(), this.getTotal());
 		}
 
 		@Override
