@@ -61,7 +61,7 @@ public abstract class Product {
 
 
 	public double getTotal() {
-		return this.getSubtotal() - this.getTax();
+		return (this.getItemQuantity() * this.getSubtotal()) + this.getTax() ;
 	}
 
 	public void setDate(String date) {} //method to keep the date of the parking pass
