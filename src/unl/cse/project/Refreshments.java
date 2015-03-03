@@ -52,8 +52,9 @@ public class Refreshments extends Product{
 		}
 		@Override
 		public void printRefreshments() {
-			System.out.printf("%s %10s (%d units @ $%.2f/unit) $%15.2f $%5.2f $%4.2f\n",
-					this.productCode, this.name, this.itemQuantity, this.cost, this.getSubtotal(), this.getTax(), this.getTotal());
+			System.out.printf("%-10s %-10s (%d units @ $%.2f/unit) %40s%10.2f $%10.2f $%10.2f\n",
+					this.productCode, this.name, this.itemQuantity, this.cost, "$", this.getSubtotal(), this.getTax(), this.getTotal());
+			
 		}
 		
 }
