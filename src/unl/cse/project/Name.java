@@ -1,8 +1,7 @@
 package unl.cse.project;
 
-
 /*
- * Name Class
+ * String Class
  * CSCE 156
  * Assignment 2-6
  * Austin Baade
@@ -23,14 +22,10 @@ public class Name {
 	 this.lName = lName;
 	 }
 	 
+	 @Override
 	 public String toString(){
-		 return this.lName + "," +this.fName;
+		 return this.lName + "," + this.fName;
 	 }
-	 /*
-		String parts[] = name.split(",");
-		Name Name = new Name(parts[0], parts[1]);
-	*/	
-	 
 	 
 	 //getters/setter methods
 	public String getfName() {

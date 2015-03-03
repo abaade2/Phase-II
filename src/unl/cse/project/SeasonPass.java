@@ -81,8 +81,8 @@ public class SeasonPass extends Product{
 
 		@Override
 		public void printSeasonPass() {
-			System.out.printf("%-10s %-78s $%10.2f $%10.2f $%10.2f\n",
-					this.productCode, "SeasonPass - "+ this.team, this.getSubtotal() * this.getItemQuantity(), this.getTax(), this.getTotal());	
+			System.out.printf("%s %10s- %s $%15.2f $%5.2f $%4.2f\n",
+					this.productCode, "SeasonPass", this.team, this.getSubtotal(), this.getTax(), this.getTotal());	
 		}
 
 		@Override

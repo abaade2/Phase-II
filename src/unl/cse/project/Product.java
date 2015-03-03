@@ -1,5 +1,8 @@
 package unl.cse.project;
 
+import org.joda.time.DateTime;
+import org.joda.time.ReadableInstant;
+
 /*
  * Product Class
  * CSCE 156
@@ -61,7 +64,7 @@ public abstract class Product {
 
 
 	public double getTotal() {
-		return (this.getItemQuantity() * this.getSubtotal()) + this.getTax() ;
+		return this.getSubtotal() - this.getTax();
 	}
 
 	public void setDate(String date) {} //method to keep the date of the parking pass

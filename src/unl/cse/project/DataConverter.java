@@ -1,14 +1,15 @@
 package unl.cse.project;
-
-
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-//import java.io.FileWriter;
-//import java.io.IOException;
 
-//import com.thoughtworks.xstream.*;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
+//import com.thoughtworks.xstream.XStream;
+//import com.thoughtworks.xstream.io.xml.DomDriver;
+
 /*
  * Main Program
  * CSCE 156
@@ -17,14 +18,14 @@ import java.io.FileNotFoundException;
  * Carlos Sandoval
  * 
  * 
- * This Program reads in flat files, creates instances of objects, and then outputs them to XML files.
+ * This Program reads in flat files, creates instances of objects, and outputs an invoice report.
  */
 
 
 
 
 
-public class InvoiceReport {
+public class DataConverter {
 public static void main(String[] args) {		
 		//New scanner that reads in the Persons data file
 		String fileName = "data/Persons.dat";
@@ -533,7 +534,7 @@ public static void main(String[] args) {
 				
 		}	
 		
-		
+			
 		System.out.println("Executive Summary Report:");
 		System.out.println("=========================");
 		System.out.printf("%-10s %-20s %-20s %11s %7s %11s %11s %11s\n", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total");
@@ -561,7 +562,7 @@ public static void main(String[] args) {
 			System.out.println("Customer Info");
 			hog.getCustomer().printCustomer();
 			System.out.println("-------------------------------------------------------");
-			System.out.printf("%-10s %10s %80s %10s %10s\n", "Code", "Item", "Subtotal", "Tax", "Total");
+			System.out.printf("%s %10s %80s %10s\n", "Code", "Item", "Tax", "Total");
 			for(Product pro: hog.getProduct()){
 				if(pro.getProductType().equals("TG")){
 					pro.printGameTicket();
@@ -575,27 +576,27 @@ public static void main(String[] args) {
 				if(pro.getProductType().equals("TS")){
 					pro.printSeasonPass();
 					int daysLeft = Days.daysBetween(hog.getDate(), pro.getEndDate()).getDays();
-					System.out.printf("%11s%d units @ $%.2f/unit prorated %d/%.0f days)\n", "(", pro.getItemQuantity(), pro.getCost(), daysLeft, pro.calculateTotalDays());
+					System.out.printf("%10s%d units @ $%10f/unit prorated %d/%.0f days)\n", "(", pro.getItemQuantity(), pro.getCost(), daysLeft, pro.calculateTotalDays());
 				}
 				if(pro.getProductType().equals("SR")){
 					pro.printRefreshments();
 				}
 			}
-			System.out.println("==============================================================================================================================");
-			System.out.printf("%-88s $%10.2f $%10.2f $%10.2f\n", "SUBTOTALS", hog.calculateSubtotal(), hog.calculateTax(), hog.calculateTotal());
-			System.out.printf("%s ( %.0f%% ) %95s -$%10.2f\n", "DISCOUNT", hog.getCustomer().getDiscountPercentage(), "", hog.calculateDiscount());
-			System.out.printf("%-112s $%10.2f\n", "ADDITIONAL FEE", hog.getCustomer().getFee());
-			System.out.printf("%-112s $%10.2f\n", "TOTAL", hog.calculateFinal());
+			System.out.println("===========================================================");
+			System.out.printf("%-60s %10.2f %10.2f %10.2f\n", "SUBTOTALS", hog.calculateSubtotal(), hog.calculateTax(), hog.calculateTotal());
+			System.out.printf("%-60s ( %.0f%% ) $-%10.2f\n", "DISCOUNT", hog.getCustomer().getDiscountPercentage(), hog.calculateDiscount());
+			System.out.printf("%-60s $%10.2f\n", "ADDITIONAL FEE", hog.getCustomer().getFee());
+			System.out.printf("%-60s $%10.2f\n", "TOTAL", hog.calculateFinal());
 			if(hog.calculateSavings() > 0){
-				System.out.printf("				                                               You saved $%.2f\n\n\n\n\n\n", hog.calculateSavings());
+				System.out.printf("				You saved $%.2f\n\n\n\n\n\n", hog.calculateSavings());
 			}
 			else{
-				System.out.println("                                                                     Thank you for your purchase!");
+				System.out.println("Thank you for your purchase!");
 				System.out.println();System.out.println();System.out.println();System.out.println();
 			}
 		}
 		
-		System.out.println("===================================================================================================================================================================");
+		System.out.println("=========================================================================================================");
 			
 	}
 }

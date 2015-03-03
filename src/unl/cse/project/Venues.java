@@ -1,6 +1,4 @@
 package unl.cse.project;
-
-
 /*
  * VenuesClass
  * CSCE 156
@@ -11,7 +9,6 @@ package unl.cse.project;
  * 
  * This class is the constructor for the venues object.
  */
-
 
 public class Venues {
 	//Variables for Venues:

@@ -1,4 +1,14 @@
 package unl.cse.project;
+/*
+ * Customer Class
+ * CSCE 156
+ * Assignment 2-6
+ * Austin Baade
+ * Carlos Sandoval
+ * 
+ * 
+ * This class is the constructor for the customer object.
+ */
 
 
 public class Customer {

@@ -18,19 +18,19 @@ public class GameTicket extends Product{
 	}
 	@Override
 	public void printGameTicket(){
-		System.out.printf("%-10s %-77s $%10.2f $%10.2f $%10.2f\n",
-				this.productCode, "GameTicket "+ this.dateTime+" "+ this.team1+" vs "+ this.team2, this.getSubtotal() * this.getItemQuantity(), this.getTax(), this.getTotal());
-		System.out.printf("%12s%d units @ $%.2f/unit)\n", "(", this.itemQuantity, this.pricePerUnit);
+		System.out.printf("%s %10s %s %s vs %s $%15.2f $%5.2f $%4.2f\n",
+				this.productCode, "GameTicket", this.dateTime, this.team1, this.team2, this.getSubtotal(), this.getTax(), this.getTotal());
+		System.out.printf("%10s%d units @ $%10.2f/unit)\n", "(", this.itemQuantity, this.pricePerUnit);
 		
 	}
 	
 	@Override
 	public double getTax(){
-		return this.getItemQuantity() * this.getSubtotal() * 0.06 ;
+		return this.getSubtotal() * 0.06;
 	}
 	@Override
 	public double getSubtotal(){
-		return this.pricePerUnit;
+		return this.pricePerUnit * this.getItemQuantity();
 	}
 	
 	public String getDateTime() {
@@ -55,18 +55,22 @@ public class GameTicket extends Product{
 	
 	@Override
 	public void printSeasonPass() {
+		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void printParkingPass() {
+		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void printPSL() {
+		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void printRefreshments() {
+		// TODO Auto-generated method stub
 		
 	}
 	
