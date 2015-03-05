@@ -535,68 +535,79 @@ public static void main(String[] args) {
 		}	
 		
 			
-		System.out.println("Executive Summary Report:");
-		System.out.println("=========================");
-		System.out.printf("%-10s %-20s %-20s %11s %7s %11s %11s %11s\n", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total");
-		for(Invoice butt:InvoiceArray){
-			butt.printSummary();
-		}
-		System.out.println("=========================================================================================================");
-		double subtotal=0, fees=0, taxes=0, discount=0, total=0;
-		for(Invoice cow: InvoiceArray){
-			subtotal += cow.calculateSubtotal();
-			fees += cow.getCustomer().getFee();
-			taxes += cow.calculateTax();
-			discount += cow.calculateDiscount();
-			total += cow.calculateFinal();
-		}
-		System.out.printf("%-52s $%10.2f $%6.2f $%10.2f $%10.2f $%10.2f\n\n\n\n", "TOTALS", subtotal, fees, taxes, discount, total);
+			System.out.println("Executive Summary Report:");
+			System.out.println("=========================");
+			System.out.printf("%-10s %-20s %-20s %11s %7s %11s %11s %11s\n", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total");
+			for(Invoice summary:InvoiceArray){
+				summary.printSummary();
+			}
+			System.out.println("=========================================================================================================");
+			double subtotal=0, fees=0, taxes=0, discount=0, total=0;
+			for(Invoice cow: InvoiceArray){
+				subtotal += cow.calculateSubtotal();
+				fees += cow.getCustomer().getFee();
+				taxes += cow.calculateTax();
+				discount += cow.calculateDiscount();
+				total += cow.calculateFinal();
+			}
+			System.out.printf("%-52s $%10.2f $%6.2f $%10.2f $%10.2f $%10.2f\n\n\n\n", "TOTALS", subtotal, fees, taxes, discount, total);
 
-		
-		System.out.println("Individual Invoice Detail Reports:");
-		System.out.println("==================================");
-		for(Invoice hog: InvoiceArray){
-			System.out.println("Invoice " + hog.getInvoiceCode());
-			System.out.println("===========================================================");
-			System.out.println("Salesperson:" + hog.getSalesPerson());
-			System.out.println("Customer Info");
-			hog.getCustomer().printCustomer();
-			System.out.println("-------------------------------------------------------");
-			System.out.printf("%s %10s %80s %10s\n", "Code", "Item", "Tax", "Total");
-			for(Product pro: hog.getProduct()){
-				if(pro.getProductType().equals("TG")){
-					pro.printGameTicket();
+
+			System.out.println("Individual Invoice Detail Reports:");
+			System.out.println("==================================");
+
+
+			/*//Printing for debugging purposes:
+			for(Invoice invoice: InvoiceArray){
+				//System.out.println(invoice.getProduct()[1].getItemQuantity());
+				for(int g =0; g<invoice.getProduct().length; g++){
+					if(invoice.getProduct()[g].getProductType().equals("SP")){
+						System.out.println(invoice.getProduct()[g].getItemQuantity());
+					}
 				}
-				if(pro.getProductType().equals("SP")){
-					pro.printParkingPass();
+			}*/
+
+			for(Invoice hog: InvoiceArray){
+				System.out.println("Invoice " + hog.getInvoiceCode());
+				System.out.println("===========================================================");
+				System.out.println("Salesperson:" + hog.getSalesPerson());
+				System.out.println("Customer Info");
+				hog.getCustomer().printCustomer();
+				System.out.println("-------------------------------------------------------");
+				System.out.printf("%-10s %10s %80s %10s %10s\n", "Code", "Item", "Subtotal", "Tax", "Total");
+				for(Product pro: hog.getProduct()){
+					if(pro.getProductType().equals("TG")){
+						pro.printGameTicket();
+					}
+					if(pro.getProductType().equals("SP")){
+						pro.printParkingPass();
+					}
+					if(pro.getProductType().equals("SL")){
+						pro.printPSL();
+					}
+					if(pro.getProductType().equals("TS")){
+						pro.printSeasonPass();
+						int daysLeft = Days.daysBetween(hog.getDate(), pro.getEndDate()).getDays();
+						System.out.printf("%11s%d units @ $%.2f/unit prorated %d/%.0f days)\n", "(", pro.getItemQuantity(), pro.getCost(), daysLeft, pro.calculateTotalDays());
+					}
+					if(pro.getProductType().equals("SR")){
+						pro.printRefreshments();
+					}
 				}
-				if(pro.getProductType().equals("SL")){
-					pro.printPSL();	
+				System.out.println("==============================================================================================================================");
+				System.out.printf("%-88s $%10.2f $%10.2f $%10.2f\n", "SUBTOTALS", hog.calculateSubtotal(), hog.calculateTax(), hog.calculateTotal());
+				System.out.printf("%s ( %.0f%% ) %95s -$%10.2f\n", "DISCOUNT", hog.getCustomer().getDiscountPercentage(), "", hog.calculateDiscount());
+				System.out.printf("%-112s $%10.2f\n", "ADDITIONAL FEE", hog.getCustomer().getFee());
+				System.out.printf("%-112s $%10.2f\n", "TOTAL", hog.calculateFinal());
+				if(hog.calculateSavings() > 0){
+					System.out.printf("				                                               You saved $%.2f\n\n\n\n\n\n", hog.calculateSavings());
 				}
-				if(pro.getProductType().equals("TS")){
-					pro.printSeasonPass();
-					int daysLeft = Days.daysBetween(hog.getDate(), pro.getEndDate()).getDays();
-					System.out.printf("%10s%d units @ $%10f/unit prorated %d/%.0f days)\n", "(", pro.getItemQuantity(), pro.getCost(), daysLeft, pro.calculateTotalDays());
-				}
-				if(pro.getProductType().equals("SR")){
-					pro.printRefreshments();
+				else{
+					System.out.println("                                                                     Thank you for your purchase!");
+					System.out.println();System.out.println();System.out.println();System.out.println();
 				}
 			}
-			System.out.println("===========================================================");
-			System.out.printf("%-60s %10.2f %10.2f %10.2f\n", "SUBTOTALS", hog.calculateSubtotal(), hog.calculateTax(), hog.calculateTotal());
-			System.out.printf("%-60s ( %.0f%% ) $-%10.2f\n", "DISCOUNT", hog.getCustomer().getDiscountPercentage(), hog.calculateDiscount());
-			System.out.printf("%-60s $%10.2f\n", "ADDITIONAL FEE", hog.getCustomer().getFee());
-			System.out.printf("%-60s $%10.2f\n", "TOTAL", hog.calculateFinal());
-			if(hog.calculateSavings() > 0){
-				System.out.printf("				You saved $%.2f\n\n\n\n\n\n", hog.calculateSavings());
-			}
-			else{
-				System.out.println("Thank you for your purchase!");
-				System.out.println();System.out.println();System.out.println();System.out.println();
-			}
-		}
-		
-		System.out.println("=========================================================================================================");
-			
+
+			System.out.println("===================================================================================================================================================================");
 	}
 }

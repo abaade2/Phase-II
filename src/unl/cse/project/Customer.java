@@ -28,6 +28,7 @@ public class Customer {
 		
 	}
 	
+
 	public double getDiscountPercentage() {
 		double discount = 0;
 	    if(this.type.equals("A")){
@@ -40,13 +41,13 @@ public class Customer {
 	    return discount;
 	    }
 	 }
-	
+
 	public double getFee(){
 		if(this.type.equals("M")){
 			return 120.0;
 		}else if(this.type.equals("A")){
 			return 150.0;
-		}else return 0.0;	
+		}else return 0.0;
 	}
 
 	public void printCustomer(){
@@ -56,12 +57,12 @@ public class Customer {
 		System.out.println(this.address.getStreet());
 		System.out.println(this.address.getCity() + " " + this.address.getState() + " "+ this.address.getZipcode() + " "+ this.address.getCountry());
 	}
-	
+
 	@Override
 	public String toString(){
 		return this.getName();
 	}
-	
+
 	public String getCustomerCode() {
 		return customerCode;
 	}

@@ -20,9 +20,9 @@ public class SeasonPass extends Product{
 		
 		@Override
 		public double calculateTotalDays(){
-			return Days.daysBetween(startDate, endDate).getDays();		
+			return Days.daysBetween(startDate, endDate).getDays();
 		}
-		
+
 		@Override
 		public double getSubtotal(){
 			return this.cost;
@@ -35,13 +35,8 @@ public class SeasonPass extends Product{
 		public String getTeam() {
 			return team;
 		}
-		
-		
 
 
-		public void setTeam(String team) {
-			this.team = team;
-		}
 
 
 		public DateTime getStartDate() {
@@ -49,19 +44,12 @@ public class SeasonPass extends Product{
 		}
 
 
-		public void setStartDate(DateTime startDate) {
-			this.startDate = startDate;
-		}
 
 		@Override
 		public DateTime getEndDate() {
 			return endDate;
 		}
 
-
-		public void setEndDate(DateTime endDate) {
-			this.endDate = endDate;
-		}
 
 		@Override
 		public double getCost() {
@@ -76,34 +64,32 @@ public class SeasonPass extends Product{
 		@Override
 		public void printGameTicket() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void printSeasonPass() {
-			System.out.printf("%s %10s- %s $%15.2f $%5.2f $%4.2f\n",
-					this.productCode, "SeasonPass", this.team, this.getSubtotal(), this.getTax(), this.getTotal());	
+			System.out.printf("%-10s %-78s $%10.2f $%10.2f $%10.2f\n",
+					this.productCode, "SeasonPass - "+ this.team, this.getSubtotal() * this.getItemQuantity(), this.getTax(), this.getTotal());
 		}
 
 		@Override
 		public void printParkingPass() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void printPSL() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void printRefreshments() {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
-		
 		
 		
 }

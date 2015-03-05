@@ -29,7 +29,6 @@ public abstract class Product {
 	}
 	
 	
-	
 	@Override
 	public String toString(){
 		return this.productCode + this.productType  +this.itemQuantity;
@@ -64,14 +63,14 @@ public abstract class Product {
 
 
 	public double getTotal() {
-		return this.getSubtotal() - this.getTax();
+		return (this.getItemQuantity() * this.getSubtotal()) + this.getTax() ;
 	}
 
 	public void setDate(String date) {} //method to keep the date of the parking pass
 	public void setHours(int hours){} //method to keep the hours of the parking pass
-	public void setSeats(String[] seats){} //method to keep the seasts for the PSL	
+	public void setSeats(String[] seats){} //method to keep the seats for the PSL
 	public double calculateTotalDays(){return 0;};
-	
+
 	public abstract void printGameTicket();
 	public abstract void printSeasonPass();
 	public abstract void printParkingPass();
@@ -91,5 +90,4 @@ public abstract class Product {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
 }

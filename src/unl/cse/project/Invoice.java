@@ -36,27 +36,23 @@ private String invoiceCode;
 	public double calculateSubtotal(){
 		int i = 0;
 		double subtotal = 0;
-		//int check = 0;
 		for(Product prod: this.product){
 			//if the product is a refreshment
 			if(prod.getProductType().equals("SR")){
-				//check = 0;
 				//if the product is a refreshment, the item quantity is messed up when there are multiple invoices with the same refreshment at a different quantity
-				//while(check == 0){ //to end the for loop if the search finds a gameticket or seasopass(prevents readding the price of the refreshment)
 					for(Product pro: this.product){
 						//if there is a gameticket or seasonpass purchased in the invoice the refreshment has a 5% discount
 						if(pro.getProductType().equals("TS") || pro.getProductType().equals("TG")){
 							subtotal += (prod.getSubtotal() - (prod.getSubtotal() * 0.05)) * prod.getItemQuantity();
-							check++;
-						}			
+							break;
+						}
 					}
-				//}
-				//if(check ==0){
-					//subtotal += prod.getSubtotal();
-				//}
 			}
 			if(prod.getProductType().equals("TS")){
 				double daysLeft = Days.daysBetween(this.date, prod.getEndDate()).getDays();
+				if(daysLeft > prod.calculateTotalDays()){ //if the days between invoice date and season start date is over the number of days in the season
+					daysLeft = prod.calculateTotalDays();
+					}
 				double costPerDay = prod.getSubtotal() / prod.calculateTotalDays();
 				//fixed rate prorated to the days left
 				double cost = costPerDay * daysLeft;
@@ -69,15 +65,15 @@ private String invoiceCode;
 				subtotal += sum * prod.getItemQuantity();
 			}
 			else{
-				subtotal += prod.getSubtotal();
+				subtotal += prod.getItemQuantity() * prod.getSubtotal();
 			}
 		}
 		return subtotal;
 	}
-	
-	
-	
-	
+
+
+
+
 	//calculates the discount for a specific invoice
 	public double calculateDiscount(){
 		double discount = 0;
@@ -94,7 +90,7 @@ private String invoiceCode;
 			return discount;
 		}
 	}
-	
+
 	//calculates the total tax for a specific invoice
 	public double calculateTax(){
 		int i = 0;
@@ -104,7 +100,7 @@ private String invoiceCode;
 		}
 		return tax;
 	}
-	
+
 	//calculates the total (including sub-totals and taxes) for a specific invoice
 	public double calculateTotal(){
 		int i = 0;
@@ -114,17 +110,19 @@ private String invoiceCode;
 		}
 		return total;
 	}
-	
+
 	//calculates the final total after the discount and additional fee have been added
-	public double calculateFinal(){
-		return (this.calculateTotal() - this.calculateDiscount()) + this.customer.getFee();
-	}
-	
-	//calculates the savings of a customer (discount - additional fee)
-	public double calculateSavings(){
-		return this.calculateDiscount() - this.customer.getFee();
-	}
-	
+		public double calculateFinal(){
+			return (this.calculateTotal() - this.calculateDiscount()) + this.customer.getFee();
+		}
+
+		//calculates the savings of a customer (discount - additional fee)
+		public double calculateSavings(){
+			return this.calculateDiscount() - this.customer.getFee();
+		}
+
+
+		//Getters and Setters
 	public Product[] getProduct() {
 		return product;
 	}
@@ -173,5 +171,6 @@ private String invoiceCode;
 	public void setInvoiceCode(String invoiceCode) {
 		this.invoiceCode = invoiceCode;
 	}
+
 
 }
